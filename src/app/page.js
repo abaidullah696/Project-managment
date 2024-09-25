@@ -1,12 +1,49 @@
-// src/app/page.js
-"use client"; // Mark this as a client-side component
+"use client";
 
 import { useEffect, useState } from 'react';
-import { db } from '../../firebase'; // Ensure this path is correct
+import { db } from '../../firebase';
 import { collection, getDocs } from 'firebase/firestore';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button } from '@mui/material';
-import ProjectModal from './components/ProjectModal'; // Correct path for ProjectModal
-import AddProjectForm from './components/AddProjectForm'; // Correct path for AddProjectForm
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  Button,
+  Typography,
+} from '@mui/material';
+import { styled } from '@mui/system';
+import ProjectModal from './components/ProjectModal';
+import AddProjectForm from './components/AddProjectForm';
+
+// Custom styles using Material UI's 'styled' function to match Figma design
+const StyledTableContainer = styled(TableContainer)(({ theme }) => ({
+  backgroundColor: '#f4f5f7', // Adjust the background as per Figma
+  borderRadius: '8px',
+  boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+  margin: '20px 0',
+}));
+
+const StyledTableHead = styled(TableHead)(({ theme }) => ({
+  backgroundColor: '#3f51b5', // Match Figma primary color for the header
+  color: '#fff',
+  '& th': {
+    fontWeight: 'bold',
+    color: '#fff',
+    fontSize: '16px', // Adjust the font size according to Figma
+  },
+}));
+
+const StyledButton = styled(Button)(({ theme }) => ({
+  backgroundColor: '#3f51b5',
+  color: '#fff',
+  '&:hover': {
+    backgroundColor: '#2c387e',
+  },
+  textTransform: 'none',
+}));
 
 export default function Home() {
   const [projects, setProjects] = useState([]);
@@ -29,37 +66,48 @@ export default function Home() {
 
   return (
     <>
-      <TableContainer component={Paper}>
+      <Typography variant="h4" sx={{ marginBottom: '20px' }}>
+        Project List
+      </Typography>
+      
+      <StyledTableContainer component={Paper}>
         <Table>
-          <TableHead>
+          <StyledTableHead>
             <TableRow>
               <TableCell>Project Name</TableCell>
               <TableCell>Description</TableCell>
               <TableCell>Date Created</TableCell>
               <TableCell>Action</TableCell>
             </TableRow>
-          </TableHead>
+          </StyledTableHead>
           <TableBody>
-            {projects.map(project => (
+            {projects.map((project) => (
               <TableRow key={project.id}>
                 <TableCell>{project.name}</TableCell>
                 <TableCell>{project.description}</TableCell>
                 <TableCell>{new Date(project.createdAt).toLocaleString()}</TableCell>
                 <TableCell>
-                  <Button variant="contained" onClick={() => handleOpenModal(project)}>
+                  <StyledButton
+                    variant="contained"
+                    onClick={() => handleOpenModal(project)}
+                  >
                     View Details
-                  </Button>
+                  </StyledButton>
                 </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
-      </TableContainer>
+      </StyledTableContainer>
 
-      <ProjectModal project={selectedProject} open={modalOpen} onClose={() => setModalOpen(false)} />
+      <ProjectModal
+        project={selectedProject}
+        open={modalOpen}
+        onClose={() => setModalOpen(false)}
+      />
 
       <div style={{ marginTop: '2rem' }}>
-        <h2>Add a New Project</h2>
+        <Typography variant="h5">Add a New Project</Typography>
         <AddProjectForm onProjectAdded={(newProject) => setProjects([...projects, newProject])} />
       </div>
     </>
