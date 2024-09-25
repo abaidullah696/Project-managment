@@ -13,7 +13,7 @@ export const metadata = {
           </header>
           <main>{children}</main>
           <footer>
-            <p>© 2024 Project Management</p>
+            <p>Project Management</p>
           </footer>
         </body>
       </html>
