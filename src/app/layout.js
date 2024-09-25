@@ -1,4 +1,3 @@
-// src/app/layout.js
 export const metadata = {
     title: 'Project Management',
     description: 'A simple project management app with Next.js and Firebase',

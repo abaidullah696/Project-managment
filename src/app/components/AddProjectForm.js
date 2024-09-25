@@ -1,11 +1,9 @@
-// src/app/components/AddProjectForm.js
 import { useState } from 'react';
 import { TextField, Button, Box } from '@mui/material';
 import { collection, addDoc } from 'firebase/firestore';
 import { db } from '../../../firebase';
 import { styled } from '@mui/system';
 
-// Custom styles for the form
 const StyledFormBox = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',

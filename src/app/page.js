@@ -18,21 +18,20 @@ import { styled } from '@mui/system';
 import ProjectModal from './components/ProjectModal';
 import AddProjectForm from './components/AddProjectForm';
 
-// Custom styles using Material UI's 'styled' function to match Figma design
 const StyledTableContainer = styled(TableContainer)(({ theme }) => ({
-  backgroundColor: '#f4f5f7', // Adjust the background as per Figma
+  backgroundColor: '#f4f5f7', 
   borderRadius: '8px',
   boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
   margin: '20px 0',
 }));
 
 const StyledTableHead = styled(TableHead)(({ theme }) => ({
-  backgroundColor: '#3f51b5', // Match Figma primary color for the header
+  backgroundColor: '#3f51b5', 
   color: '#fff',
   '& th': {
     fontWeight: 'bold',
     color: '#fff',
-    fontSize: '16px', // Adjust the font size according to Figma
+    fontSize: '16px', 
   },
 }));
 
