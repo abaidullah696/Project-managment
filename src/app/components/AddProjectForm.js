@@ -1,66 +1,66 @@
 import { useState } from 'react';
-import { TextField, Button, Box } from '@mui/material';
+import { Modal, Box, Typography, TextField, Button } from '@mui/material';
 import { collection, addDoc } from 'firebase/firestore';
 import { db } from '../../../firebase';
-import { styled } from '@mui/system';
 
-const StyledFormBox = styled(Box)(({ theme }) => ({
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '16px',
-  padding: '20px',
-  backgroundColor: '#f9f9f9',
-  borderRadius: '8px',
-  boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-}));
-
-const StyledButton = styled(Button)(({ theme }) => ({
-  backgroundColor: '#3f51b5',
-  color: '#fff',
-  '&:hover': {
-    backgroundColor: '#2c387e',
-  },
-  textTransform: 'none',
-}));
-
-const AddProjectForm = ({ onProjectAdded }) => {
+export default function AddProjectForm({ open, onClose }) {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const docRef = await addDoc(collection(db, 'projects'), {
+    await addDoc(collection(db, 'projects'), {
       name,
       description,
       createdAt: new Date().toISOString(),
     });
-    const newProject = { id: docRef.id, name, description, createdAt: new Date().toISOString() };
-    onProjectAdded(newProject);
     setName('');
     setDescription('');
+    onClose();
   };
 
   return (
-    <StyledFormBox component="form" onSubmit={handleSubmit}>
-      <TextField
-        label="Project Name"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        required
-        fullWidth
-      />
-      <TextField
-        label="Description"
-        value={description}
-        onChange={(e) => setDescription(e.target.value)}
-        required
-        fullWidth
-      />
-      <StyledButton type="submit" variant="contained">
-        Add Project
-      </StyledButton>
-    </StyledFormBox>
+    <Modal open={open} onClose={onClose}>
+      <Box
+        sx={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: 400,
+          bgcolor: 'background.paper',
+          boxShadow: 24,
+          p: 4,
+          borderRadius: '10px',
+        }}
+      >
+        <Typography variant="h6" mb={2} fontWeight="bold">
+          Add New Project
+        </Typography>
+        <form onSubmit={handleSubmit}>
+          <TextField
+            label="Project Name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            fullWidth
+            required
+            sx={{ mb: 2 }}
+          />
+          <TextField
+            label="Description"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            fullWidth
+            multiline
+            rows={3}
+            required
+            sx={{ mb: 2 }}
+          />
+          <Button type="submit" variant="contained" fullWidth>
+            Add Project
+          </Button>
+        </form>
+      </Box>
+    </Modal>
   );
-};
-
-export default AddProjectForm;
+}
