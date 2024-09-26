@@ -3,17 +3,15 @@ import { Modal, Box, Typography, TextField, Button } from '@mui/material';
 import { collection, addDoc } from 'firebase/firestore';
 import { db } from '../../../firebase';
 
-export default function AddProjectForm({ open, onClose }) {
+export default function AddProjectForm({ open, onClose, onProjectAdded }) {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await addDoc(collection(db, 'projects'), {
-      name,
-      description,
-      createdAt: new Date().toISOString(),
-    });
+    const newProject = { name, description, createdAt: new Date().toISOString() };
+    const docRef = await addDoc(collection(db, 'projects'), newProject);
+    onProjectAdded({ id: docRef.id, ...newProject });
     setName('');
     setDescription('');
     onClose();

@@ -1,30 +1,20 @@
-"use client"; // Enable client-side component rendering
+"use client";
 
 import { useEffect, useState } from 'react';
-import { db } from '../../firebase'; // Ensure Firebase setup is correct
+import { db } from '../../firebase'; // Ensure Firebase is correctly set up
 import { collection, getDocs } from 'firebase/firestore';
-import {
-  Box,
-  Button,
-  Container,
-  Typography,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  IconButton,
-} from '@mui/material';
-import AddIcon from '@mui/icons-material/Add'; // Material UI icon for Add button
-import ProjectModal from './components/ProjectModal';
+import { Container, Button } from '@mui/material';
+import Navbar from './components/Navbar';
+import AddCheckIn from './components/AddCheckIn';
+import ProjectCards from './components/ProjectCards';
 import AddProjectForm from './components/AddProjectForm';
+import ProjectModal from './components/ProjectModal';
 
 export default function Home() {
   const [projects, setProjects] = useState([]);
-  const [selectedProject, setSelectedProject] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
+  const [selectedProject, setSelectedProject] = useState(null);
+  const [projectDetailsModalOpen, setProjectDetailsModalOpen] = useState(false);
 
   // Fetch Projects
   useEffect(() => {
@@ -36,72 +26,53 @@ export default function Home() {
     fetchProjects();
   }, []);
 
-  // Open Modal for Project Details
-  const handleOpenModal = (project) => {
+  // Add Project to State
+  const handleProjectAdded = (newProject) => {
+    setProjects((prevProjects) => [...prevProjects, newProject]);
+  };
+
+  // View Project Details
+  const handleViewDetails = (project) => {
     setSelectedProject(project);
-    setModalOpen(true);
+    setProjectDetailsModalOpen(true);
   };
 
   return (
-    <Container maxWidth="lg" sx={{ mt: 4 }}>
-      {/* Header with title and add button */}
-      <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
-        <Typography variant="h4" fontWeight="bold">
-          Project List
-        </Typography>
-        <Button
-          variant="contained"
-          startIcon={<AddIcon />}
-          onClick={() => setModalOpen(true)}
-          sx={{ backgroundColor: '#4CAF50' }} // Adjust the color to match Figma
-        >
-          Add Project
-        </Button>
-      </Box>
+    <>
+      {/* Navbar */}
+      <Navbar />
 
-      {/* Project List Table */}
-      <TableContainer component={Paper} sx={{ boxShadow: 3, borderRadius: '12px' }}>
-        <Table>
-          <TableHead sx={{ backgroundColor: '#1976d2' }}>
-            <TableRow>
-              <TableCell sx={{ color: '#fff', fontWeight: 'bold' }}>Project Name</TableCell>
-              <TableCell sx={{ color: '#fff', fontWeight: 'bold' }}>Description</TableCell>
-              <TableCell sx={{ color: '#fff', fontWeight: 'bold' }}>Date Created</TableCell>
-              <TableCell sx={{ color: '#fff', fontWeight: 'bold' }}>Action</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {projects.map((project) => (
-              <TableRow key={project.id} hover>
-                <TableCell>{project.name}</TableCell>
-                <TableCell>{project.description}</TableCell>
-                <TableCell>{new Date(project.createdAt).toLocaleString()}</TableCell>
-                <TableCell>
-                  <Button
-                    variant="outlined"
-                    color="primary"
-                    onClick={() => handleOpenModal(project)}
-                  >
-                    View Details
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+      {/* Add Check-In Section */}
+      <AddCheckIn />
 
-      {/* Project Modal */}
-      {selectedProject && (
-        <ProjectModal
-          project={selectedProject}
-          open={modalOpen}
-          onClose={() => setModalOpen(false)}
-        />
-      )}
+      {/* Project Cards */}
+      <Container sx={{ mt: 4 }}>
+        <ProjectCards projects={projects} onViewDetails={handleViewDetails} />
+      </Container>
 
-      {/* Add Project Form */}
-      <AddProjectForm open={modalOpen} onClose={() => setModalOpen(false)} />
-    </Container>
+      {/* Add Project Modal */}
+      <AddProjectForm
+        open={modalOpen}
+        onClose={() => setModalOpen(false)}
+        onProjectAdded={handleProjectAdded}
+      />
+
+      {/* View Project Details Modal */}
+      <ProjectModal
+        project={selectedProject}
+        open={projectDetailsModalOpen}
+        onClose={() => setProjectDetailsModalOpen(false)}
+      />
+
+      {/* Button to Open Add Project Modal */}
+      <Button
+        variant="contained"
+        color="secondary"
+        sx={{ position: 'fixed', bottom: '20px', right: '20px' }}
+        onClick={() => setModalOpen(true)}
+      >
+        Add Project
+      </Button>
+    </>
   );
 }

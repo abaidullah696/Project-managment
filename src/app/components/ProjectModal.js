@@ -1,6 +1,8 @@
 import { Modal, Box, Typography, Button } from '@mui/material';
 
 export default function ProjectModal({ project, open, onClose }) {
+  if (!project) return null;
+
   return (
     <Modal open={open} onClose={onClose}>
       <Box
