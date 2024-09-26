@@ -1,14 +1,15 @@
+// src/app/page.js
 "use client";
 
 import { useEffect, useState } from 'react';
-import { db } from '../../firebase'; // Ensure Firebase is correctly set up
+import { db } from '../../firebase'; 
 import { collection, getDocs } from 'firebase/firestore';
-import { Container, Button } from '@mui/material';
 import Navbar from './components/Navbar';
 import AddCheckIn from './components/AddCheckIn';
 import ProjectCards from './components/ProjectCards';
 import AddProjectForm from './components/AddProjectForm';
 import ProjectModal from './components/ProjectModal';
+import { Button,Typography } from '@mui/material';
 
 export default function Home() {
   const [projects, setProjects] = useState([]);
@@ -16,7 +17,7 @@ export default function Home() {
   const [selectedProject, setSelectedProject] = useState(null);
   const [projectDetailsModalOpen, setProjectDetailsModalOpen] = useState(false);
 
-  // Fetch Projects
+  
   useEffect(() => {
     const fetchProjects = async () => {
       const projectCollection = collection(db, 'projects');
@@ -26,12 +27,12 @@ export default function Home() {
     fetchProjects();
   }, []);
 
-  // Add Project to State
+ 
   const handleProjectAdded = (newProject) => {
     setProjects((prevProjects) => [...prevProjects, newProject]);
   };
 
-  // View Project Details
+  
   const handleViewDetails = (project) => {
     setSelectedProject(project);
     setProjectDetailsModalOpen(true);
@@ -39,32 +40,34 @@ export default function Home() {
 
   return (
     <>
-      {/* Navbar */}
+      
       <Navbar />
 
-      {/* Add Check-In Section */}
+      
       <AddCheckIn />
 
-      {/* Project Cards */}
-      <Container sx={{ mt: 4 }}>
+      <div style={{ marginTop: '20px', padding: '0 20px' }}>
+        <Typography variant="h4" fontWeight="bold" gutterBottom>
+          Added CheckIns
+        </Typography>
         <ProjectCards projects={projects} onViewDetails={handleViewDetails} />
-      </Container>
+      </div>
 
-      {/* Add Project Modal */}
+      
       <AddProjectForm
         open={modalOpen}
         onClose={() => setModalOpen(false)}
         onProjectAdded={handleProjectAdded}
       />
 
-      {/* View Project Details Modal */}
+      
       <ProjectModal
         project={selectedProject}
         open={projectDetailsModalOpen}
         onClose={() => setProjectDetailsModalOpen(false)}
       />
 
-      {/* Button to Open Add Project Modal */}
+      
       <Button
         variant="contained"
         color="secondary"

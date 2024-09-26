@@ -7,13 +7,7 @@ export const metadata = {
     return (
       <html lang="en">
         <body>
-          <header>
-            <h1>Project Management Dashboard</h1>
-          </header>
           <main>{children}</main>
-          <footer>
-            <p>Project Management</p>
-          </footer>
         </body>
       </html>
     );

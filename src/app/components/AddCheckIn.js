@@ -1,28 +1,47 @@
-import { Box, Typography, Button } from '@mui/material';
+// components/AddCheckIn.js
+import React from 'react';
+import { Button, Box, Typography } from '@mui/material';
 
-export default function AddCheckIn() {
+const AddCheckIn = () => {
   return (
     <Box
       sx={{
-        height: '400px',
-        backgroundImage: 'url("https://img.freepik.com/free-photo/view-island-middle-lake_181624-19253.jpg?semt=ais_hybrid")', // Replace with your background image
+        position: 'relative',
+        height: '300px',
+        backgroundImage: 'url(https://img.freepik.com/free-photo/view-island-middle-lake_181624-19253.jpg?ga=GA1.1.1407451264.1727376626&semt=ais_hybrid)', // Use your background image
         backgroundSize: 'cover',
         backgroundPosition: 'center',
+        borderRadius: '20px',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        flexDirection: 'column',
         color: 'white',
-        textAlign: 'center',
-        padding: '2rem',
       }}
     >
-      <Typography variant="h3" fontWeight="bold" gutterBottom>
-        Add Check-In
-      </Typography>
-      <Button variant="contained" color="secondary">
-        Start Check-In
-      </Button>
+      <Box
+        sx={{
+          position: 'absolute',
+          left: '20px',
+          bottom: '40px',
+          zIndex: 1,
+        }}
+      >
+        <Typography variant="h3" fontWeight="bold">
+          Hi! 👋 James Doe
+        </Typography>
+        <Typography variant="body1" sx={{ mb: 3 }}>
+          It,s  nice to see you again.Keep visiting here regularly.
+        </Typography>
+        <Button
+          variant="contained"
+          color="primary"
+          sx={{ backgroundColor: '#673ab7', padding: '10px 30px', fontSize: '18px' }}
+        >
+          Add Check In
+        </Button>
+      </Box>
     </Box>
   );
-}
+};
+
+export default AddCheckIn;
