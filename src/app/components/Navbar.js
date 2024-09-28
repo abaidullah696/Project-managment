@@ -1,4 +1,3 @@
-// components/Navbar.js
 import React from 'react';
 import { AppBar, Toolbar, Typography, Button, IconButton, Avatar, Box } from '@mui/material';
 import FeedbackIcon from '@mui/icons-material/Feedback';

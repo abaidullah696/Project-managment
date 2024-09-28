@@ -1,4 +1,3 @@
-// components/ProjectCards.js
 import React from 'react';
 import { Card, CardMedia, CardContent, Typography, Chip, Grid } from '@mui/material';
 
